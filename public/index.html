@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✈️ Flight Booking</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✈️ Flight Booking</h1>
+            <p>Find and book your perfect flight</p>
+        </header>
+
+        <!-- Search Section -->
+        <section class="search-section">
+            <h2>Search Flights</h2>
+            <form id="searchForm">
+                <input type="text" id="from" placeholder="From (e.g., New York)" />
+                <input type="text" id="to" placeholder="To (e.g., London)" />
+                <input type="date" id="date" />
+                <button type="submit">Search Flights</button>
+            </form>
+        </section>
+
+        <!-- Flights List -->
+        <section class="flights-section">
+            <h2>Available Flights</h2>
+            <div id="flightsList">
+                <p class="loading">Loading flights...</p>
+            </div>
+        </section>
+
+        <!-- Booking Form -->
+        <section class="booking-section" id="bookingSection" style="display:none;">
+            <h2>Book Flight</h2>
+            <form id="bookingForm">
+                <input type="hidden" id="flightId" />
+                <div class="flight-info" id="selectedFlightInfo"></div>
+                <input type="text" id="passengerName" placeholder="Full Name" required />
+                <input type="email" id="email" placeholder="Email Address" required />
+                <input type="number" id="seats" placeholder="Number of Seats" min="1" value="1" required />
+                <p id="totalPrice" style="font-weight: bold; margin-top: 10px;"></p>
+                <button type="submit">Confirm Booking</button>
+                <button type="button" onclick="closeBooking()">Cancel</button>
+            </form>
+        </section>
+
+        <!-- My Bookings -->
+        <section class="bookings-section">
+            <h2>My Bookings</h2>
+            <button onclick="loadBookings()">Refresh Bookings</button>
+            <div id="bookingsList">
+                <p>No bookings yet</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+</html>
