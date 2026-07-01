@@ -3,59 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✈️ Flight Booking</title>
+    <title>✈️ SkyBooker - Flight Booking</title>
     <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>✈️ Flight Booking</h1>
-            <p>Find and book your perfect flight</p>
-        </header>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">✈️</span>
+                <span class="logo-text">SkyBooker</span>
+            </div>
+            <div class="nav-links">
+                <a href="#flights" class="nav-link active">Flights</a>
+                <a href="#bookings" class="nav-link">My Bookings</a>
+                <button onclick="scrollToBooking()" class="nav-cta">Book Now</button>
+            </div>
+        </div>
+    </nav>
 
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">✈️ Best Deals</div>
+            <h1 class="hero-title">Discover Your <span class="gradient-text">Next Adventure</span></h1>
+            <p class="hero-subtitle">Find the best flights at the best prices. Book your journey today.</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Daily Flights</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">120+</span>
+                    <span class="stat-label">Destinations</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">4.8★</span>
+                    <span class="stat-label">Average Rating</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="floating-card card1">✈️</div>
+            <div class="floating-card card2">🌍</div>
+            <div class="floating-card card3">🏖️</div>
+        </div>
+    </section>
+
+    <div class="container">
         <!-- Search Section -->
-        <section class="search-section">
-            <h2>Search Flights</h2>
-            <form id="searchForm">
-                <input type="text" id="from" placeholder="From (e.g., New York)" />
-                <input type="text" id="to" placeholder="To (e.g., London)" />
-                <input type="date" id="date" />
-                <button type="submit">Search Flights</button>
+        <section class="search-section" id="search">
+            <div class="section-header">
+                <h2>🔍 Find Your Flight</h2>
+                <p>Search and compare flights from top airlines</p>
+            </div>
+            <form id="searchForm" class="search-form">
+                <div class="search-grid">
+                    <div class="form-group">
+                        <label>From</label>
+                        <input type="text" id="from" placeholder="City or Airport" />
+                    </div>
+                    <div class="form-group">
+                        <label>To</label>
+                        <input type="text" id="to" placeholder="City or Airport" />
+                    </div>
+                    <div class="form-group">
+                        <label>Departure Date</label>
+                        <input type="date" id="date" />
+                    </div>
+                    <div class="form-group">
+                        <label>Price Range</label>
+                        <div class="price-range">
+                            <input type="number" id="minPrice" placeholder="Min $" />
+                            <span>to</span>
+                            <input type="number" id="maxPrice" placeholder="Max $" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Stops</label>
+                        <select id="stops">
+                            <option value="">Any</option>
+                            <option value="0">Direct</option>
+                            <option value="1">1 Stop</option>
+                            <option value="2">2+ Stops</option>
+                        </select>
+                    </div>
+                    <div class="form-group search-actions">
+                        <button type="submit" class="btn-primary">
+                            <span>🔍</span> Search Flights
+                        </button>
+                        <button type="reset" class="btn-secondary" onclick="resetSearch()">
+                            Reset
+                        </button>
+                    </div>
+                </div>
             </form>
         </section>
 
         <!-- Flights List -->
-        <section class="flights-section">
-            <h2>Available Flights</h2>
-            <div id="flightsList">
-                <p class="loading">Loading flights...</p>
+        <section class="flights-section" id="flights">
+            <div class="section-header">
+                <h2>✈️ Available Flights</h2>
+                <div class="flight-controls">
+                    <span id="flightCount">0 flights available</span>
+                    <div class="view-toggle">
+                        <button class="view-btn active" onclick="setView('grid')">📱</button>
+                        <button class="view-btn" onclick="setView('list')">📋</button>
+                    </div>
+                </div>
+            </div>
+            <div id="flightsList" class="flights-grid">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading flights...</p>
+                </div>
             </div>
         </section>
 
         <!-- Booking Form -->
         <section class="booking-section" id="bookingSection" style="display:none;">
-            <h2>Book Flight</h2>
-            <form id="bookingForm">
-                <input type="hidden" id="flightId" />
-                <div class="flight-info" id="selectedFlightInfo"></div>
-                <input type="text" id="passengerName" placeholder="Full Name" required />
-                <input type="email" id="email" placeholder="Email Address" required />
-                <input type="number" id="seats" placeholder="Number of Seats" min="1" value="1" required />
-                <p id="totalPrice" style="font-weight: bold; margin-top: 10px;"></p>
-                <button type="submit">Confirm Booking</button>
-                <button type="button" onclick="closeBooking()">Cancel</button>
-            </form>
+            <div class="booking-modal">
+                <div class="booking-header">
+                    <h2>✈️ Book Your Flight</h2>
+                    <button onclick="closeBooking()" class="close-btn">×</button>
+                </div>
+                <form id="bookingForm" class="booking-form">
+                    <input type="hidden" id="flightId" />
+                    <div class="flight-summary" id="selectedFlightInfo">
+                        <div class="summary-header">
+                            <span class="airline-icon">✈️</span>
+                            <div>
+                                <h3 id="flightRoute">Loading...</h3>
+                                <p id="flightDetails">Loading...</p>
+                            </div>
+                        </div>
+                        <div class="summary-price" id="priceDisplay">
+                            <span class="price-amount">$0</span>
+                            <span class="price-label">total</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" id="passengerName" placeholder="John Doe" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address *</label>
+                            <input type="email" id="email" placeholder="john@example.com" required />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" id="phone" placeholder="+1 234 567 890" />
+                        </div>
+                        <div class="form-group">
+                            <label>Number of Seats *</label>
+                            <div class="seat-selector">
+                                <button type="button" onclick="adjustSeats(-1)">−</button>
+                                <input type="number" id="seats" value="1" min="1" max="10" required />
+                                <button type="button" onclick="adjustSeats(1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Special Requests</label>
+                        <textarea id="specialRequests" placeholder="Dietary preferences, seat preference, etc." rows="2"></textarea>
+                    </div>
+
+                    <div class="booking-total">
+                        <div class="total-row">
+                            <span>Price per seat:</span>
+                            <span id="perSeatPrice">$0</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Number of seats:</span>
+                            <span id="seatCount">1</span>
+                        </div>
+                        <div class="total-row total-final">
+                            <span>Total:</span>
+                            <span id="totalPrice">$0</span>
+                        </div>
+                    </div>
+
+                    <div class="booking-actions">
+                        <button type="submit" class="btn-primary btn-large">
+                            <span>✅</span> Confirm Booking
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="closeBooking()">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
         </section>
 
         <!-- My Bookings -->
-        <section class="bookings-section">
-            <h2>My Bookings</h2>
-            <button onclick="loadBookings()">Refresh Bookings</button>
-            <div id="bookingsList">
-                <p>No bookings yet</p>
+        <section class="bookings-section" id="bookings">
+            <div class="section-header">
+                <h2>📋 My Bookings</h2>
+                <button onclick="loadBookings()" class="refresh-btn">🔄 Refresh</button>
+            </div>
+            <div id="bookingsList" class="bookings-list">
+                <div class="empty-state">
+                    <div class="empty-icon">🛫</div>
+                    <h3>No Bookings Yet</h3>
+                    <p>Start your journey by booking a flight today!</p>
+                </div>
             </div>
         </section>
     </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
 
     <script src="/script.js"></script>
 </body>
